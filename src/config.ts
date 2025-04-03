@@ -1,27 +1,54 @@
-import { Regex, type SomeCompanionConfigField } from '@companion-module/base'
+import { type SomeCompanionConfigField } from '@companion-module/base'
 
 export interface ModuleConfig {
-	host: string
-	port: number
+	zone: string
+	refresh_interval: number
+	fixed_offset: string
+	iana: string
 }
 
+export const MIN_REFRESH_INTERVAL = 100
+export const MAX_REFRESH_INTERVAL = 500
+export const DEFAULT_REFRESH_INTERVAL = 500
+
 export function GetConfigFields(): SomeCompanionConfigField[] {
+
 	return [
 		{
-			type: 'textinput',
-			id: 'host',
-			label: 'Target IP',
-			width: 8,
-			regex: Regex.IP,
+			id: 'zone',
+			type: 'dropdown',
+			label: 'Timezone',
+			choices: [
+				{ id: 'system', label: 'System' },
+				{ id: 'utc', label: 'UTC' },
+				{ id: 'fixed_offset', label: 'Fixed Offset' },
+				{ id: 'iana', label: 'IANA' },
+			],
+			width: 12,
+			default: 'system'
 		},
 		{
+			id: 'refresh_interval',
 			type: 'number',
-			id: 'port',
-			label: 'Target Port',
-			width: 4,
-			min: 1,
-			max: 65535,
-			default: 8000,
+			label: 'Refresh Interval (ms)',
+			width: 6,
+			min: MIN_REFRESH_INTERVAL,
+			max: MAX_REFRESH_INTERVAL,
+			default: DEFAULT_REFRESH_INTERVAL
+		},
+		{
+			id: 'fixed_offset',
+			type: 'textinput',
+			label: 'Fixed Offset',
+			width: 6,
+			default: '',
+		},
+		{
+			id: 'iana',
+			type: 'textinput',
+			label: 'IANA',
+			width: 6,
+			default: '',
 		},
 	]
 }
