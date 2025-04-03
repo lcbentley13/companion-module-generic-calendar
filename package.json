@@ -1,5 +1,5 @@
 {
-	"name": "generic-calendar",
+	"name": "generic-datetime",
 	"version": "1.0.0",
 	"main": "dist/main.js",
 	"type": "module",
@@ -16,7 +16,7 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/bitfocus/companion-module-generic-calendar.git"
+		"url": "git+https://github.com/bitfocus/companion-module-generic-datetime.git"
 	},
 	"dependencies": {
 		"@companion-module/base": "~1.11.2",

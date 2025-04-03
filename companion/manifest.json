@@ -1,12 +1,12 @@
 {
-	"id": "generic-calendar",
-	"name": "generic-calendar",
-	"shortname": "calendar",
-	"description": "generic-calendar",
+	"id": "generic-datetime",
+	"name": "generic-datetime",
+	"shortname": "datetime",
+	"description": "generic-datetime",
 	"version": "1.0.0",
 	"license": "MIT",
-	"repository": "git+https://github.com/bitfocus/companion-module-generic-calendar.git",
-	"bugs": "https://github.com/bitfocus/companion-module-generic-calendar/issues",
+	"repository": "git+https://github.com/bitfocus/companion-module-generic-datetime.git",
+	"bugs": "https://github.com/bitfocus/companion-module-generic-datetime/issues",
 	"maintainers": [
 		{
 			"name": "Landon Bentley",
@@ -21,6 +21,6 @@
 	},
 	"legacyIds": [],
 	"manufacturer": "Generic",
-	"products": ["Calendar"],
-	"keywords": ["Calendar", "Schedule", "Date", "Time", "DateTime"]
+	"products": ["DateTime"],
+	"keywords": ["DateTime", "Date", "Time", "Calendar", "Schedule", "Cron"]
 }
