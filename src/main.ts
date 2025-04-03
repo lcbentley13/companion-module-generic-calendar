@@ -1,9 +1,11 @@
-import { InstanceBase, runEntrypoint, InstanceStatus, SomeCompanionConfigField } from '@companion-module/base'
+import { InstanceBase, runEntrypoint, InstanceStatus, SomeCompanionConfigField, CompanionVariableValues } from '@companion-module/base'
 import { GetConfigFields, type ModuleConfig } from './config.js'
 import { UpdateVariableDefinitions } from './variables.js'
 import { UpgradeScripts } from './upgrades.js'
 import { UpdateActions } from './actions.js'
 import { UpdateFeedbacks } from './feedbacks.js'
+import { DateTime } from 'luxon'
+import { tokens } from './tokens.js'
 
 export class ModuleInstance extends InstanceBase<ModuleConfig> {
 	config!: ModuleConfig // Setup in init()
@@ -20,7 +22,24 @@ export class ModuleInstance extends InstanceBase<ModuleConfig> {
 		this.updateActions() // export actions
 		this.updateFeedbacks() // export feedbacks
 		this.updateVariableDefinitions() // export variable definitions
+
+		this.run();
 	}
+
+	run(): void {
+		setInterval(() => {
+			const now = DateTime.now();
+
+			let variableValues: CompanionVariableValues = {}
+
+			for (const token of tokens) {
+				variableValues[token.value] = now.toFormat(token.value);
+			}
+
+			this.setVariableValues(variableValues)
+		}, 500);
+	}
+
 	// When module gets deleted
 	async destroy(): Promise<void> {
 		this.log('debug', 'destroy')
