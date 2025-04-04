@@ -71,7 +71,7 @@ export function DefineFeedbacks(self: ModuleInstance): void {
 				} else if (targetOccurrence > 0) {
 					return currentOccurrence === targetOccurrence
 				} else {
-					return currentOccurrence === occurrencesInMonth + targetOccurrence + 1
+					return currentOccurrence === targetOccurrence + occurrencesInMonth + 1
 				}
 			},
 		},
