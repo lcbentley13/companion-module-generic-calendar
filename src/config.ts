@@ -1,6 +1,7 @@
 import { InstanceStatus, type SomeCompanionConfigField } from '@companion-module/base'
 import { ModuleInstance } from './main.js'
 import { GetRezonedDateTime } from './luxon-extensions/functions.js'
+import { FixedOffsetZone, IANAZone } from 'luxon'
 
 export interface ModuleConfig {
 	zone: 'system' | 'utc' | 'fixedOffset' | 'iana'
@@ -25,7 +26,7 @@ export function GetConfigFields(): SomeCompanionConfigField[] {
 				{ id: 'fixedOffset', label: 'Fixed Offset' },
 				{ id: 'iana', label: 'IANA' },
 			],
-			width: 12,
+			width: 6,
 			default: 'system',
 		},
 		{
@@ -56,28 +57,31 @@ export function GetConfigFields(): SomeCompanionConfigField[] {
 
 export function ValidateConfig(self: ModuleInstance): void {
 	if (self.config.zone === 'system' && (self.config.fixedOffset || self.config.iana)) {
+		self.updateStatus(InstanceStatus.BadConfig, 'Multiple timezones were specified')
+		self.isValidConfig = false
+		return
+	}
+
+	if (self.config.zone === 'fixedOffset' && !FixedOffsetZone.parseSpecifier(self.config.fixedOffset)) {
 		self.updateStatus(
 			InstanceStatus.BadConfig,
-			'System timezone was specified, but a Fixed Offset or IANA timezone was provided',
+			'Fixed Offset timezone was specified, but a valid Fixed Offset specification was not provided',
 		)
 		self.isValidConfig = false
 		return
 	}
 
-	if (self.config.zone === 'fixedOffset' && !self.config.fixedOffset) {
+	if (self.config.zone === 'iana' && !IANAZone.isValidZone(self.config.iana)) {
 		self.updateStatus(
 			InstanceStatus.BadConfig,
-			'Fixed Offset timezone was specified, but the Fixed Offset specification was not provided',
+			'IANA timezone was specified, but a valid IANA specification was not provided',
 		)
 		self.isValidConfig = false
 		return
 	}
 
-	if (self.config.zone === 'iana' && !self.config.iana) {
-		self.updateStatus(
-			InstanceStatus.BadConfig,
-			'IANA timezone was specified, but the IANA specification was not provided',
-		)
+	if (self.config.fixedOffset && self.config.iana) {
+		self.updateStatus(InstanceStatus.BadConfig, 'Both a Fixed Offset timezone and an IANA timezone was specified')
 		self.isValidConfig = false
 		return
 	}

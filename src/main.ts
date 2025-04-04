@@ -24,6 +24,7 @@ export class ModuleInstance extends InstanceBase<ModuleConfig> {
 
 			setInterval(() => {
 				this.updateVariableValues()
+				this.checkFeedbacks()
 			}, this.config.refreshInterval)
 		}
 	}
@@ -39,6 +40,7 @@ export class ModuleInstance extends InstanceBase<ModuleConfig> {
 
 			setInterval(() => {
 				this.updateVariableValues()
+				this.checkFeedbacks()
 			}, this.config.refreshInterval)
 		}
 	}
