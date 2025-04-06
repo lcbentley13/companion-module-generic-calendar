@@ -1,7 +1,14 @@
 import { CompanionVariableDefinition, CompanionVariableValues } from '@companion-module/base'
 import type { ModuleInstance } from './main.js'
 import { GetNumberOfWeeksInMonth, GetRezonedDateTime, GetWeekOccurrence } from './luxon-extensions/functions.js'
-import { FormatTokens } from './luxon-extensions/tokens.js'
+import { FormatTokens } from './luxon-extensions/formats.js'
+import {
+	VAR_DAY_OF_WEEK_OCCURENCE_UNPADDED,
+	VAR_DAY_OF_WEEK_OCCURENCE_PADDED_2,
+	VAR_DAY_OF_WEEK_OCCURENCE_COUNT_UNPADDED,
+	VAR_DAY_OF_WEEK_OCCURENCE_COUNT_PADDED_2,
+	VAR_DAYS_IN_MONTH,
+} from './constants/variables.js'
 
 export function DefineVariables(self: ModuleInstance): void {
 	let variables: CompanionVariableDefinition[] = []
@@ -9,18 +16,33 @@ export function DefineVariables(self: ModuleInstance): void {
 	// Add all built-in luxon format tokens as variables
 	for (const token of FormatTokens) {
 		variables.push({
-			variableId: token.value,
+			variableId: token.variableId,
 			name: token.description,
 		})
 	}
 
 	// Custom variables
 	variables = variables.concat(
-		{ variableId: 'w', name: 'occurrence of the current day of the week in the month, unpadded' },
-		{ variableId: 'ww', name: 'occurrence of the current day of the week in the month, padded to 2' },
-		{ variableId: 'Mw', name: 'number of times the current day of the week occurs in the month, unpadded' },
-		{ variableId: 'Mww', name: 'number of times the current day of the week occurs in the month, padded to 2' },
-		{ variableId: 'Md', name: 'days in the month' },
+		{
+			variableId: VAR_DAY_OF_WEEK_OCCURENCE_UNPADDED,
+			name: 'occurrence of the current day of the week in the month, unpadded',
+		},
+		{
+			variableId: VAR_DAY_OF_WEEK_OCCURENCE_PADDED_2,
+			name: 'occurrence of the current day of the week in the month, padded to 2',
+		},
+		{
+			variableId: VAR_DAY_OF_WEEK_OCCURENCE_COUNT_UNPADDED,
+			name: 'number of times the current day of the week occurs in the month, unpadded',
+		},
+		{
+			variableId: VAR_DAY_OF_WEEK_OCCURENCE_COUNT_PADDED_2,
+			name: 'number of times the current day of the week occurs in the month, padded to 2',
+		},
+		{
+			variableId: VAR_DAYS_IN_MONTH,
+			name: 'days in the month',
+		},
 	)
 
 	self.setVariableDefinitions(variables)
@@ -32,18 +54,18 @@ export function UpdateVariableValues(self: ModuleInstance): void {
 
 	// Set all built-in luxon format token values
 	for (const token of FormatTokens) {
-		variableValues[token.value] = now.toFormat(token.value)
+		variableValues[token.variableId] = now.toFormat(token.value) // Use `variableId` as the key
 	}
 
 	// Custom variables
 	const weekOccurrence = GetWeekOccurrence(now)
 	const weeksInMonth = GetNumberOfWeeksInMonth(now)
 
-	variableValues['w'] = weekOccurrence
-	variableValues['ww'] = weekOccurrence.toString().padStart(2, '0')
-	variableValues['Md'] = now.daysInMonth
-	variableValues['Mw'] = weeksInMonth
-	variableValues['Mww'] = weeksInMonth.toString().padStart(2, '0')
+	variableValues[VAR_DAY_OF_WEEK_OCCURENCE_UNPADDED] = weekOccurrence
+	variableValues[VAR_DAY_OF_WEEK_OCCURENCE_PADDED_2] = weekOccurrence.toString().padStart(2, '0')
+	variableValues[VAR_DAY_OF_WEEK_OCCURENCE_COUNT_UNPADDED] = weeksInMonth
+	variableValues[VAR_DAY_OF_WEEK_OCCURENCE_COUNT_PADDED_2] = weeksInMonth.toString().padStart(2, '0')
+	variableValues[VAR_DAYS_IN_MONTH] = now.daysInMonth
 
 	self.setVariableValues(variableValues)
 }

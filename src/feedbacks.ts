@@ -1,3 +1,8 @@
+import {
+	VAR_DAY_OF_WEEK_OCCURENCE_UNPADDED,
+	VAR_DAY_OF_WEEK_OCCURENCE_COUNT_UNPADDED,
+	VAR_DAY_OF_WEEK_NUMBER,
+} from './constants/variables.js'
 import type { ModuleInstance } from './main.js'
 
 const occurrences: { [id: string]: number } = {
@@ -62,9 +67,9 @@ export function DefineFeedbacks(self: ModuleInstance): void {
 				const targetOccurrence = occurrences[feedback.options.occurrence as string]
 				const targetDayOfWeek = weekdays[feedback.options.dayOfWeek as string]
 
-				const currentOccurrence = Number(self.getVariableValue('w'))
-				const occurrencesInMonth = Number(self.getVariableValue('Mw'))
-				const currentDayOfWeek = Number(self.getVariableValue('E'))
+				const currentOccurrence = Number(self.getVariableValue(VAR_DAY_OF_WEEK_OCCURENCE_UNPADDED))
+				const occurrencesInMonth = Number(self.getVariableValue(VAR_DAY_OF_WEEK_OCCURENCE_COUNT_UNPADDED))
+				const currentDayOfWeek = Number(self.getVariableValue(VAR_DAY_OF_WEEK_NUMBER))
 
 				if (currentDayOfWeek !== targetDayOfWeek) {
 					return false
