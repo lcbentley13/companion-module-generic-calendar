@@ -1,6 +1,6 @@
 import { InstanceStatus, type SomeCompanionConfigField } from '@companion-module/base'
 import { ModuleInstance } from './main.js'
-import { GetRezonedDateTime } from './luxon-extensions/functions.js'
+import { GetRezonedDateTime } from './extensions/functions.js'
 import { FixedOffsetZone, IANAZone } from 'luxon'
 
 export interface ModuleConfig {

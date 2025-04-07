@@ -1,7 +1,7 @@
 import { CompanionVariableDefinition, CompanionVariableValues } from '@companion-module/base'
 import type { ModuleInstance } from './main.js'
-import { GetNumberOfWeeksInMonth, GetRezonedDateTime, GetWeekOccurrence } from './luxon-extensions/functions.js'
-import { FormatTokens } from './luxon-extensions/formats.js'
+import { GetNumberOfWeeksInMonth, GetWeekOccurrence } from './extensions/functions.js'
+import { FormatTokens } from './extensions/formats.js'
 import {
 	VAR_DAY_OF_WEEK_OCCURENCE_UNPADDED,
 	VAR_DAY_OF_WEEK_OCCURENCE_PADDED_2,
@@ -49,23 +49,22 @@ export function DefineVariables(self: ModuleInstance): void {
 }
 
 export function UpdateVariableValues(self: ModuleInstance): void {
-	const now = GetRezonedDateTime(self)
 	const variableValues: CompanionVariableValues = {}
 
 	// Set all built-in luxon format token values
 	for (const token of FormatTokens) {
-		variableValues[token.variableId] = now.toFormat(token.value) // Use `variableId` as the key
+		variableValues[token.variableId] = self.now.toFormat(token.value) // Use `variableId` as the key
 	}
 
 	// Custom variables
-	const weekOccurrence = GetWeekOccurrence(now)
-	const weeksInMonth = GetNumberOfWeeksInMonth(now)
+	const weekOccurrence = GetWeekOccurrence(self.now)
+	const weeksInMonth = GetNumberOfWeeksInMonth(self.now)
 
 	variableValues[VAR_DAY_OF_WEEK_OCCURENCE_UNPADDED] = weekOccurrence
 	variableValues[VAR_DAY_OF_WEEK_OCCURENCE_PADDED_2] = weekOccurrence.toString().padStart(2, '0')
 	variableValues[VAR_DAY_OF_WEEK_OCCURENCE_COUNT_UNPADDED] = weeksInMonth
 	variableValues[VAR_DAY_OF_WEEK_OCCURENCE_COUNT_PADDED_2] = weeksInMonth.toString().padStart(2, '0')
-	variableValues[VAR_DAYS_IN_MONTH] = now.daysInMonth
+	variableValues[VAR_DAYS_IN_MONTH] = self.now.daysInMonth
 
 	self.setVariableValues(variableValues)
 }

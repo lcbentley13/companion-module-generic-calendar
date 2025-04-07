@@ -4,9 +4,12 @@ import { DefineVariables, UpdateVariableValues } from './variables.js'
 import { UpgradeScripts } from './upgrades.js'
 import { DefineActions } from './actions.js'
 import { DefineFeedbacks } from './feedbacks.js'
+import { DateTime } from 'luxon'
+import { GetRezonedDateTime } from './extensions/functions.js'
 
 export class ModuleInstance extends InstanceBase<ModuleConfig> {
 	config!: ModuleConfig
+	now!: DateTime
 	isValidConfig: boolean = false
 
 	constructor(internal: unknown) {
@@ -14,8 +17,8 @@ export class ModuleInstance extends InstanceBase<ModuleConfig> {
 	}
 
 	async init(config: ModuleConfig): Promise<void> {
-		this.config = config
-		this.validateConfig()
+		this.validateConfig(config)
+		this.getRezonedDateTime()
 
 		if (this.isValidConfig) {
 			this.defineActions()
@@ -30,8 +33,8 @@ export class ModuleInstance extends InstanceBase<ModuleConfig> {
 	}
 
 	async configUpdated(config: ModuleConfig): Promise<void> {
-		this.config = config
-		this.validateConfig()
+		this.validateConfig(config)
+		this.getRezonedDateTime()
 
 		if (this.isValidConfig) {
 			this.defineActions()
@@ -53,8 +56,13 @@ export class ModuleInstance extends InstanceBase<ModuleConfig> {
 		return GetConfigFields()
 	}
 
-	validateConfig(): void {
+	validateConfig(config: ModuleConfig): void {
+		this.config = config
 		ValidateConfig(this)
+	}
+
+	getRezonedDateTime(): void {
+		this.now = GetRezonedDateTime(this)
 	}
 
 	defineActions(): void {
