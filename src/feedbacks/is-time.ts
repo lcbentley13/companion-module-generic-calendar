@@ -1,4 +1,8 @@
-import { CompanionFeedbackInfo, SomeCompanionFeedbackInputField } from '@companion-module/base'
+import {
+	CompanionFeedbackContext,
+	CompanionFeedbackInfo,
+	SomeCompanionFeedbackInputField,
+} from '@companion-module/base'
 import { ModuleInstance } from '../main.js'
 import { DateTime } from 'luxon'
 
@@ -14,8 +18,13 @@ export function isTimeOptions(self: ModuleInstance): SomeCompanionFeedbackInputF
 	]
 }
 
-export function isTimeCallback(self: ModuleInstance, feedback: CompanionFeedbackInfo): boolean {
-	const targetTime = DateTime.fromFormat(feedback.options.time as string, 'HH:mm:ss', {
+export async function isTimeCallback(
+	self: ModuleInstance,
+	feedback: CompanionFeedbackInfo,
+	context: CompanionFeedbackContext,
+): Promise<boolean> {
+	const targetTimeString = await context.parseVariablesInString(feedback.options.time as string)
+	const targetTime = DateTime.fromFormat(targetTimeString, 'HH:mm:ss', {
 		zone: self.state.now.zone,
 	}).startOf('second')
 	const currentTime = self.state.now.startOf('second')

@@ -24,7 +24,7 @@ export function DefineFeedbacks(self: ModuleInstance): void {
 				color: combineRgb(255, 255, 255),
 			},
 			options: isDateOptions(self),
-			callback: (feedback) => isDateCallback(self, feedback),
+			callback: async (feedback, context) => isDateCallback(self, feedback, context),
 		},
 		IsTime: {
 			name: 'Is Time',
@@ -34,7 +34,7 @@ export function DefineFeedbacks(self: ModuleInstance): void {
 				color: combineRgb(255, 255, 255),
 			},
 			options: isTimeOptions(self),
-			callback: (feedback) => isTimeCallback(self, feedback),
+			callback: async (feedback, context) => isTimeCallback(self, feedback, context),
 		},
 		IsDateTime: {
 			name: 'Is DateTime',
@@ -44,7 +44,7 @@ export function DefineFeedbacks(self: ModuleInstance): void {
 				color: combineRgb(255, 255, 255),
 			},
 			options: isDateTimeOptions(self),
-			callback: (feedback) => isDateTimeCallback(self, feedback),
+			callback: async (feedback, context) => isDateTimeCallback(self, feedback, context),
 		},
 		IsLeapYear: {
 			name: 'Is Leap Year',
@@ -64,7 +64,7 @@ export function DefineFeedbacks(self: ModuleInstance): void {
 				color: combineRgb(255, 255, 255),
 			},
 			options: isYearOptions(self),
-			callback: (feedback) => isYearCallback(self, feedback),
+			callback: async (feedback, context) => isYearCallback(self, feedback, context),
 		},
 		IsQuarter: {
 			name: 'Is Quarter',
@@ -104,7 +104,7 @@ export function DefineFeedbacks(self: ModuleInstance): void {
 				color: combineRgb(255, 255, 255),
 			},
 			options: isHourOptions(self),
-			callback: (feedback) => isHourCallback(self, feedback),
+			callback: async (feedback, context) => isHourCallback(self, feedback, context),
 		},
 		IsMinute: {
 			name: 'Is Minute',
@@ -114,7 +114,7 @@ export function DefineFeedbacks(self: ModuleInstance): void {
 				color: combineRgb(255, 255, 255),
 			},
 			options: isMinuteOptions(self),
-			callback: (feedback) => isMinuteCallback(self, feedback),
+			callback: async (feedback, context) => isMinuteCallback(self, feedback, context),
 		},
 		IsSecond: {
 			name: 'Is Second',
@@ -124,7 +124,7 @@ export function DefineFeedbacks(self: ModuleInstance): void {
 				color: combineRgb(255, 255, 255),
 			},
 			options: isSecondOptions(self),
-			callback: (feedback) => isSecondCallback(self, feedback),
+			callback: async (feedback, context) => isSecondCallback(self, feedback, context),
 		},
 		IsDayOfWeek: {
 			name: 'Is Day of the Week',

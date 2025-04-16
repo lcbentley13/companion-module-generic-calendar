@@ -1,22 +1,27 @@
-import { CompanionFeedbackInfo, SomeCompanionFeedbackInputField } from '@companion-module/base'
+import {
+	CompanionFeedbackContext,
+	CompanionFeedbackInfo,
+	SomeCompanionFeedbackInputField,
+} from '@companion-module/base'
 import { ModuleInstance } from '../main.js'
 
 export function isHourOptions(self: ModuleInstance): SomeCompanionFeedbackInputField[] {
 	return [
 		{
 			id: 'hour',
-			type: 'number',
+			type: 'textinput',
 			label: 'Hour in 24-hour format (0-23)',
-			default: self.state.now.hour,
-			min: 0,
-			max: 23,
-			range: false,
+			default: self.state.now.hour.toString(),
 		},
 	]
 }
 
-export function isHourCallback(self: ModuleInstance, feedback: CompanionFeedbackInfo): boolean {
-	const targetHour = feedback.options.hour as number
+export async function isHourCallback(
+	self: ModuleInstance,
+	feedback: CompanionFeedbackInfo,
+	context: CompanionFeedbackContext,
+): Promise<boolean> {
+	const targetHour = Number(await context.parseVariablesInString(feedback.options.hour as string))
 	const currentHour = self.state.now.hour
 	return currentHour === targetHour
 }

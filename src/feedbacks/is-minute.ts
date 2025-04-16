@@ -1,22 +1,27 @@
-import { CompanionFeedbackInfo, SomeCompanionFeedbackInputField } from '@companion-module/base'
+import {
+	CompanionFeedbackContext,
+	CompanionFeedbackInfo,
+	SomeCompanionFeedbackInputField,
+} from '@companion-module/base'
 import { ModuleInstance } from '../main.js'
 
 export function isMinuteOptions(self: ModuleInstance): SomeCompanionFeedbackInputField[] {
 	return [
 		{
 			id: 'minute',
-			type: 'number',
+			type: 'textinput',
 			label: 'Minute (0-59)',
-			default: self.state.now.minute,
-			min: 0,
-			max: 59,
-			range: false,
+			default: self.state.now.minute.toString(),
 		},
 	]
 }
 
-export function isMinuteCallback(self: ModuleInstance, feedback: CompanionFeedbackInfo): boolean {
-	const targetMinute = feedback.options.minute as number
+export async function isMinuteCallback(
+	self: ModuleInstance,
+	feedback: CompanionFeedbackInfo,
+	context: CompanionFeedbackContext,
+): Promise<boolean> {
+	const targetMinute = Number(await context.parseVariablesInString(feedback.options.minute as string))
 	const currentMinute = self.state.now.minute
 	return currentMinute === targetMinute
 }
