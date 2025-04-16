@@ -1,7 +1,6 @@
 import { InstanceBase, runEntrypoint, SomeCompanionConfigField } from '@companion-module/base'
 import { GetConfigFields, ValidateConfig, type ModuleConfig } from './config.js'
 import { UpgradeScripts } from './upgrades.js'
-import { DefineActions } from './actions.js'
 import { DefineFeedbacks } from './feedbacks.js'
 import { DateTimeState } from './state.js'
 import { DefineVariables, UpdateVariableValues } from './variables.js'
@@ -24,7 +23,6 @@ export class ModuleInstance extends InstanceBase<ModuleConfig> {
 
 		if (this.isValidConfig) {
 			this.updateState()
-			this.defineActions()
 			this.defineFeedbacks()
 			this.defineVariables()
 
@@ -47,10 +45,6 @@ export class ModuleInstance extends InstanceBase<ModuleConfig> {
 	validateConfig(config: ModuleConfig): void {
 		this.config = config
 		ValidateConfig(this)
-	}
-
-	defineActions(): void {
-		DefineActions(this)
 	}
 
 	defineFeedbacks(): void {
