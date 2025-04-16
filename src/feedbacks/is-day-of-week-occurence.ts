@@ -47,6 +47,7 @@ export const isDayOfWeekOccurenceOptions: SomeCompanionFeedbackInputField[] = [
 		type: 'dropdown',
 		label: 'Day of the Week',
 		choices: [
+			{ id: 'current', label: 'Current Day of the Week' },
 			{ id: 'monday', label: 'Monday' },
 			{ id: 'tuesday', label: 'Tuesday' },
 			{ id: 'wednesday', label: 'Wednesday' },
@@ -61,13 +62,14 @@ export const isDayOfWeekOccurenceOptions: SomeCompanionFeedbackInputField[] = [
 
 export function isDayOfWeekOccurenceCallback(self: ModuleInstance, feedback: CompanionFeedbackInfo): boolean {
 	const targetOccurrence = occurrences[feedback.options.occurrence as string]
+	const targetCurrentDayOfWeek = feedback.options.dayOfWeek === 'current'
 	const targetDayOfWeek = weekdays[feedback.options.dayOfWeek as string]
 
 	const currentOccurrence = Number(self.state.variables[VAR_DAY_OF_WEEK_OCCURENCE_UNPADDED])
 	const occurrencesInMonth = Number(self.state.variables[VAR_DAY_OF_WEEK_OCCURENCE_COUNT_UNPADDED])
 	const currentDayOfWeek = Number(self.state.variables[VAR_DAY_OF_WEEK_NUMBER])
 
-	if (currentDayOfWeek !== targetDayOfWeek) {
+	if (!targetCurrentDayOfWeek && currentDayOfWeek !== targetDayOfWeek) {
 		return false
 	} else if (targetOccurrence > 0) {
 		return currentOccurrence === targetOccurrence
