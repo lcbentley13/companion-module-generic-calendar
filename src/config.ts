@@ -81,7 +81,7 @@ export function ValidateConfig(self: ModuleInstance): void {
 	}
 
 	if (self.config.fixedOffset && self.config.iana) {
-		self.updateStatus(InstanceStatus.BadConfig, 'Both a Fixed Offset timezone and an IANA timezone was specified')
+		self.updateStatus(InstanceStatus.BadConfig, 'Both a Fixed Offset timezone and an IANA timezone were specified')
 		self.isValidConfig = false
 		return
 	}

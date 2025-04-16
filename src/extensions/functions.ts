@@ -19,18 +19,11 @@ export function GetWeekOccurrence(dt: DateTime): number {
 }
 
 export function GetNumberOfWeeksInMonth(dt: DateTime): number {
+	const startOfMonth = dt.startOf('month')
 	const endOfMonth = dt.endOf('month')
 	const targetDay = dt.weekday
 
-	let count = 0
-	let currentDay = dt.startOf('month')
+	const firstOccurrence = startOfMonth.plus({ days: (targetDay - startOfMonth.weekday + 7) % 7 })
 
-	while (currentDay <= endOfMonth) {
-		if (currentDay.weekday === targetDay) {
-			count++
-		}
-		currentDay = currentDay.plus({ days: 1 })
-	}
-
-	return count
+	return Math.floor(endOfMonth.diff(firstOccurrence, 'weeks').weeks) + 1
 }
