@@ -12,6 +12,7 @@ import { isMinuteCallback, isMinuteOptions } from './feedbacks/is-minute.js'
 import { isSecondCallback, isSecondOptions } from './feedbacks/is-second.js'
 import { isDateCallback, isDateOptions } from './feedbacks/is-date.js'
 import { isTimeCallback, isTimeOptions } from './feedbacks/is-time.js'
+import { isDateTimeCallback, isDateTimeOptions } from './feedbacks/is-datetime.js'
 
 export function DefineFeedbacks(self: ModuleInstance): void {
 	self.setFeedbackDefinitions({
@@ -34,6 +35,16 @@ export function DefineFeedbacks(self: ModuleInstance): void {
 			},
 			options: isTimeOptions(self),
 			callback: (feedback) => isTimeCallback(self, feedback),
+		},
+		IsDateTime: {
+			name: 'Is DateTime',
+			type: 'boolean',
+			defaultStyle: {
+				bgcolor: combineRgb(0, 153, 0),
+				color: combineRgb(255, 255, 255),
+			},
+			options: isDateTimeOptions(self),
+			callback: (feedback) => isDateTimeCallback(self, feedback),
 		},
 		IsLeapYear: {
 			name: 'Is Leap Year',
