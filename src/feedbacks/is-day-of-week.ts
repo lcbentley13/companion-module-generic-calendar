@@ -1,5 +1,4 @@
 import { CompanionFeedbackInfo, SomeCompanionFeedbackInputField } from '@companion-module/base'
-import { VAR_DAY_OF_WEEK_NUMBER } from '../constants/variables.js'
 import { ModuleInstance } from '../main.js'
 
 const weekdays: { [id: string]: number } = {
@@ -32,6 +31,6 @@ export const isDayOfWeekOptions: SomeCompanionFeedbackInputField[] = [
 
 export function isDayOfWeekCallback(self: ModuleInstance, feedback: CompanionFeedbackInfo): boolean {
 	const targetDayOfWeek = weekdays[feedback.options.dayOfWeek as string]
-	const currentDayOfWeek = Number(self.getVariableValue(VAR_DAY_OF_WEEK_NUMBER))
+	const currentDayOfWeek = self.state.now.weekday
 	return currentDayOfWeek === targetDayOfWeek
 }

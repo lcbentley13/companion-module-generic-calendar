@@ -1,7 +1,7 @@
 import { InstanceStatus, type SomeCompanionConfigField } from '@companion-module/base'
 import { ModuleInstance } from './main.js'
 import { GetRezonedDateTime } from './extensions/functions.js'
-import { FixedOffsetZone, IANAZone } from 'luxon'
+import { DateTime, FixedOffsetZone, IANAZone } from 'luxon'
 
 export interface ModuleConfig {
 	zone: 'system' | 'utc' | 'fixedOffset' | 'iana'
@@ -98,7 +98,7 @@ export function ValidateConfig(self: ModuleInstance): void {
 		return
 	}
 
-	const now = GetRezonedDateTime(self)
+	const now = GetRezonedDateTime(self, DateTime.now())
 	if (!now.isValid) {
 		self.updateStatus(InstanceStatus.BadConfig, 'Invalid timezone provided')
 		self.isValidConfig = false

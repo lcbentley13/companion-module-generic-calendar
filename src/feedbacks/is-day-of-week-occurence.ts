@@ -63,9 +63,9 @@ export function isDayOfWeekOccurenceCallback(self: ModuleInstance, feedback: Com
 	const targetOccurrence = occurrences[feedback.options.occurrence as string]
 	const targetDayOfWeek = weekdays[feedback.options.dayOfWeek as string]
 
-	const currentOccurrence = Number(self.getVariableValue(VAR_DAY_OF_WEEK_OCCURENCE_UNPADDED))
-	const occurrencesInMonth = Number(self.getVariableValue(VAR_DAY_OF_WEEK_OCCURENCE_COUNT_UNPADDED))
-	const currentDayOfWeek = Number(self.getVariableValue(VAR_DAY_OF_WEEK_NUMBER))
+	const currentOccurrence = Number(self.state.variables[VAR_DAY_OF_WEEK_OCCURENCE_UNPADDED])
+	const occurrencesInMonth = Number(self.state.variables[VAR_DAY_OF_WEEK_OCCURENCE_COUNT_UNPADDED])
+	const currentDayOfWeek = Number(self.state.variables[VAR_DAY_OF_WEEK_NUMBER])
 
 	if (currentDayOfWeek !== targetDayOfWeek) {
 		return false

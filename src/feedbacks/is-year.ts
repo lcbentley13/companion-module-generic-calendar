@@ -1,6 +1,5 @@
 import { CompanionFeedbackInfo, SomeCompanionFeedbackInputField } from '@companion-module/base'
 import { ModuleInstance } from '../main.js'
-import { VAR_YEAR_PADDED_4 } from '../constants/variables.js'
 
 export function isYearOptions(self: ModuleInstance): SomeCompanionFeedbackInputField[] {
 	return [
@@ -8,7 +7,7 @@ export function isYearOptions(self: ModuleInstance): SomeCompanionFeedbackInputF
 			id: 'year',
 			type: 'number',
 			label: 'Year',
-			default: self.now.year,
+			default: self.state.now.year,
 			min: 1970,
 			max: 2100,
 			range: false,
@@ -17,7 +16,7 @@ export function isYearOptions(self: ModuleInstance): SomeCompanionFeedbackInputF
 }
 
 export function isYearCallback(self: ModuleInstance, feedback: CompanionFeedbackInfo): boolean {
-	const targetYear = Number(feedback.options.year)
-	const currentYear = Number(self.getVariableValue(VAR_YEAR_PADDED_4))
+	const targetYear = feedback.options.year as number
+	const currentYear = self.state.now.year
 	return currentYear === targetYear
 }

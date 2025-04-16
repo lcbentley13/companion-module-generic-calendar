@@ -1,17 +1,16 @@
 import { DateTime } from 'luxon'
 import { ModuleInstance } from '../main.js'
 
-export function GetRezonedDateTime(self: ModuleInstance): DateTime {
-	const now = DateTime.now()
+export function GetRezonedDateTime(self: ModuleInstance, dt: DateTime): DateTime {
 	switch (self.config.zone) {
 		case 'utc':
-			return now.setZone('UTC')
+			return dt.setZone('UTC')
 		case 'fixedOffset':
-			return now.setZone(self.config.fixedOffset)
+			return dt.setZone(self.config.fixedOffset)
 		case 'iana':
-			return now.setZone(self.config.iana)
+			return dt.setZone(self.config.iana)
 		default:
-			return now
+			return dt
 	}
 }
 

@@ -17,6 +17,6 @@ export const isMeridiemOptions: SomeCompanionFeedbackInputField[] = [
 
 export function isMeridiemCallback(self: ModuleInstance, feedback: CompanionFeedbackInfo): boolean {
 	const targetMeridiem = feedback.options.meridiem as string
-	const currentMeridiem = self.getVariableValue(VAR_MERIDIEM)
+	const currentMeridiem = self.state.variables[VAR_MERIDIEM] as string
 	return currentMeridiem === targetMeridiem
 }

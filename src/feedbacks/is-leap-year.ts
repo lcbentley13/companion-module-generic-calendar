@@ -4,5 +4,5 @@ import { ModuleInstance } from '../main.js'
 export const isLeapYearOptions: SomeCompanionFeedbackInputField[] = []
 
 export function isLeapYearCallback(self: ModuleInstance): boolean {
-	return self.now.isInLeapYear
+	return self.state.now.isInLeapYear
 }

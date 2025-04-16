@@ -1,6 +1,5 @@
 import { CompanionFeedbackInfo, SomeCompanionFeedbackInputField } from '@companion-module/base'
 import { ModuleInstance } from '../main.js'
-import { VAR_QUARTER_UNPADDED } from '../constants/variables.js'
 
 const quarters: { [id: string]: number } = {
 	first: 1,
@@ -25,7 +24,7 @@ export const isQuarterOptions: SomeCompanionFeedbackInputField[] = [
 ]
 
 export function isQuarterCallback(self: ModuleInstance, feedback: CompanionFeedbackInfo): boolean {
-	const targetQuarter = Number(quarters[feedback.options.quarter as string])
-	const currentQuarter = Number(self.getVariableValue(VAR_QUARTER_UNPADDED))
+	const targetQuarter = quarters[feedback.options.quarter as string]
+	const currentQuarter = self.state.now.quarter
 	return currentQuarter === targetQuarter
 }

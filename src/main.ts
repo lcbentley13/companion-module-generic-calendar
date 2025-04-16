@@ -1,47 +1,35 @@
 import { InstanceBase, runEntrypoint, SomeCompanionConfigField } from '@companion-module/base'
 import { GetConfigFields, ValidateConfig, type ModuleConfig } from './config.js'
-import { DefineVariables, UpdateVariableValues } from './variables.js'
 import { UpgradeScripts } from './upgrades.js'
 import { DefineActions } from './actions.js'
 import { DefineFeedbacks } from './feedbacks.js'
-import { DateTime } from 'luxon'
-import { GetRezonedDateTime } from './extensions/functions.js'
+import { DateTimeState } from './state.js'
+import { DefineVariables, UpdateVariableValues } from './variables.js'
 
 export class ModuleInstance extends InstanceBase<ModuleConfig> {
 	config!: ModuleConfig
-	now!: DateTime
 	isValidConfig: boolean = false
+	state!: DateTimeState
 
 	constructor(internal: unknown) {
 		super(internal)
 	}
 
 	async init(config: ModuleConfig): Promise<void> {
-		this.validateConfig(config)
-		this.getRezonedDateTime()
-
-		if (this.isValidConfig) {
-			this.defineActions()
-			this.defineFeedbacks()
-			this.defineVariables()
-
-			setInterval(() => {
-				this.updateVariableValues()
-				this.checkFeedbacks()
-			}, this.config.refreshInterval)
-		}
+		await this.configUpdated(config)
 	}
 
 	async configUpdated(config: ModuleConfig): Promise<void> {
 		this.validateConfig(config)
-		this.getRezonedDateTime()
 
 		if (this.isValidConfig) {
+			this.updateState()
 			this.defineActions()
 			this.defineFeedbacks()
 			this.defineVariables()
 
 			setInterval(() => {
+				this.updateState()
 				this.updateVariableValues()
 				this.checkFeedbacks()
 			}, this.config.refreshInterval)
@@ -61,10 +49,6 @@ export class ModuleInstance extends InstanceBase<ModuleConfig> {
 		ValidateConfig(this)
 	}
 
-	getRezonedDateTime(): void {
-		this.now = GetRezonedDateTime(this)
-	}
-
 	defineActions(): void {
 		DefineActions(this)
 	}
@@ -75,6 +59,10 @@ export class ModuleInstance extends InstanceBase<ModuleConfig> {
 
 	defineVariables(): void {
 		DefineVariables(this)
+	}
+
+	updateState(): void {
+		this.state = new DateTimeState(this)
 	}
 
 	updateVariableValues(): void {

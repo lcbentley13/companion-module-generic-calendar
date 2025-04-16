@@ -1,6 +1,5 @@
 import { CompanionFeedbackInfo, SomeCompanionFeedbackInputField } from '@companion-module/base'
 import { ModuleInstance } from '../main.js'
-import { VAR_MONTH_UNPADDED } from '../constants/variables.js'
 
 const months: { [id: string]: number } = {
 	january: 1,
@@ -41,7 +40,7 @@ export const isMonthOptions: SomeCompanionFeedbackInputField[] = [
 ]
 
 export function isMonthCallback(self: ModuleInstance, feedback: CompanionFeedbackInfo): boolean {
-	const targetMonth = Number(months[feedback.options.month as string])
-	const currentMonth = self.getVariableValue(VAR_MONTH_UNPADDED)
+	const targetMonth = months[feedback.options.month as string]
+	const currentMonth = self.state.now.month
 	return currentMonth === targetMonth
 }
